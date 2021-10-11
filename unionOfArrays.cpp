@@ -1,4 +1,4 @@
-//program to return union of two arraysdisplaying elements of set i.e., union of the two arrays
+//program to return union of two arrays
 #include <iostream>
 #include<set>
 using namespace std;
