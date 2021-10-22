@@ -1,0 +1,118 @@
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <limits.h>
+#include <stdbool.h>
+typedef struct MemoryBlock
+{
+int id;
+int size;
+}MemoryBlock;
+void print_block(MemoryBlock block)
+{
+if(block.id != -1 && block.size != -1)
+printf("Block #%d of size %d\n",block.id,block.size);
+else
+printf("Invalid Memory Block\n");
+}
+typedef struct MemoryManager
+{
+MemoryBlock b;
+struct MemoryManager*llink,*rlink;
+}MemoryManager;
+MemoryBlock allocate(MemoryManager * m,int memory)
+{
+MemoryBlock bl;
+if(m==NULL){
+bl.id=-1;
+bl.size=-1;
+}
+else{
+MemoryManager*ptr=m,*ptr1,*ptr2;
+while( ptr->rlink!=NULL && ptr->b.size<memory)
+ptr=ptr->rlink;
+if(ptr->b.size>=memory){
+bl=ptr->b;
+ptr1=ptr->llink;
+if(ptr1!=NULL)
+ptr1->rlink=ptr->rlink;
+ptr2=ptr1->rlink;
+if(ptr2!=NULL)
+ptr2->llink=ptr1;
+}
+else{
+bl.id=-1;
+bl.size=-1;
+
+}
+}
+return bl;
+}
+void deallocate(MemoryManager * m,MemoryBlock memory)
+{
+MemoryManager*ptr=m,*ptr1;
+while(ptr->rlink!=NULL)
+ptr=ptr->rlink;
+ptr1=malloc(sizeof(MemoryManager));
+ptr1->b=memory;
+ptr->rlink=ptr1;
+ptr1->llink=ptr;
+ptr1->rlink=NULL;
+}
+int main() {
+MemoryManager * m = (MemoryManager *)malloc(sizeof(MemoryManager));
+int n;
+scanf("%d",&n);
+for(int i = 0;i<n;i++)
+{
+int memory;
+scanf("%d",&memory);
+MemoryBlock * block = (MemoryBlock *)malloc(sizeof(MemoryBlock));
+block->id = i+1;
+block->size = memory;
+deallocate(m,*block);
+}
+while(1)
+{
+int choice;
+scanf("%d",&choice);
+switch(choice)
+{
+case 1:
+{
+int requested_memory;
+scanf("%d",&requested_memory);
+MemoryBlock block = allocate(m,requested_memory);
+if(block.id == -1 || block.size == -1)
+printf("Memory Insufficient !\n");
+else
+{
+printf("Allocating ");
+print_block(block);
+}
+}
+break;
+case 2:
+
+{
+int size;
+scanf("%d",&size);
+MemoryBlock block;
+block.id = ++n;
+block.size = size;
+deallocate(m,block);
+printf("Deallocating ");
+print_block(block);
+}
+break;
+case 3:
+{
+return 0;
+}
+break;
+}
+}
+return 0;
+}
