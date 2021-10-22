@@ -1,0 +1,107 @@
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <limits.h>
+#include <stdbool.h>
+typedef struct node
+{
+    char val;
+    struct node *next;
+    struct node *prev;
+} node;
+node *head = NULL;
+void display()
+{
+    if (head == NULL)
+    {
+        printf("Empty\n");
+        return;
+    }
+    node *ptr = head;
+    while (ptr != NULL)
+    {
+        printf("%c", ptr->val);
+        ptr = ptr->next;
+    }
+    printf("\n");
+}
+void insert(char v)
+{
+    struct node *ptr, *temp;
+    ptr = (struct node *)malloc(sizeof(struct node));
+    if (ptr == NULL)
+    {
+        printf("No free memory available");
+        return;
+    }
+    else
+    {
+        if (head == NULL)
+        {
+            ptr->next = NULL;
+            ptr->val = v;
+            head = ptr;
+            ptr->prev = NULL;
+        }
+        else
+        {
+            temp = head;
+            while (temp->next != NULL)
+            {
+                temp = temp->next;
+            }
+            ptr->val = v;
+            temp->next = ptr;
+            ptr->prev = temp;
+            ptr->next = NULL;
+        }
+    }
+}
+bool reverse()
+{
+    struct node *right = head;
+    struct node *left = head;
+    if (head == NULL)
+    {
+        return true;
+    }
+    while (right->next != NULL)
+    {
+        right = right->next;
+    }
+    while (left != right && right != left->prev)
+    {
+        if (left->val != right->val)
+            return false;
+        left = left->next;
+        right = right->prev;
+    }
+    return true;
+}
+int main()
+{
+    char item[20];
+    int length;
+    bool flag;
+    int choice;
+    printf("Enter the string\n");
+    scanf("%s", &item);
+    length = strlen(item);
+    for (int i = 0; i < length; i++)
+    {
+        insert(item[i]);
+    }
+    display();
+    flag = reverse();
+    if (flag == false)
+    {
+        printf("The given string is not palindrome\n");
+    }
+    else
+    {
+        printf("The given string is palindrome\n");
+    }
+    return 0;
+} 
