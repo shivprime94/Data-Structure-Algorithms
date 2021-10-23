@@ -1,0 +1,53 @@
+#include <stdio.h>
+void main()
+{
+    int rows, columns, a[20][20], b[20][3], i, j, k, count = 0;
+    printf("Enter the number of rows of sparse matrix\n");
+    scanf("%d", &rows);
+    printf("Enter the number of columns of sparse matrix\n");
+    scanf("%d", &columns);
+    printf("Enter the elements of sparse matrix\n");
+    for (i = 0; i < rows; i++)
+    {
+        for (j = 0; j < columns; j++)
+        {
+            scanf("%d", &a[i][j]);
+        }
+    }
+    printf("Displaying the elements of sparse matrix\n");
+    for (i = 0; i < rows; i++)
+    {
+        for (j = 0; j < columns; j++)
+        {
+            printf("%d ", a[i][j]);
+        }
+        printf("\n");
+    }
+    b[0][0] = rows;
+    b[0][1] = columns;
+    k = 1;
+    for (i = 0; i < rows; i++)
+    {
+        for (j = 0; j < columns; j++)
+        {
+            if (a[i][j] != 0)
+            {
+                b[k][0] = i;
+                b[k][1] = j;
+                b[k][2] = a[i][j];
+                k++;
+                count += 1;
+            }
+        }
+        b[0][2] = count;
+    }
+    printf("Displaying the effecient representation of sparse matrix\n");
+    for (i = 0; i < count + 1; i++)
+    {
+        for (j = 0; j < 3; j++)
+        {
+            printf("%d ", b[i][j]);
+        }
+        printf("\n");
+    }
+} 
