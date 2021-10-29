@@ -1,0 +1,22 @@
+/**
+Solution to Max Area Island at LeetCode in Pyhthon
+author: chandresh189
+ref: https://leetcode.com/problems/max-area-of-island/
+**/
+class Solution:
+    def cal(self, grid, i, j):
+        grid[i][j] = 0
+        n=1
+        l = [(i-1, j), (i, j-1), (i+1, j), (i, j+1)]
+        for r,c in l:
+            if r>=0 and r<len(grid) and c>=0 and c<len(grid[0]) and grid[r][c] == 1:
+                n += self.cal(grid, r, c)
+        return n
+                
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        area_max = 0
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if(grid[i][j]==1):
+                    area_max = max(area_max, self.cal(grid, i, j))
+        return area_max
