@@ -1,0 +1,105 @@
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <limits.h>
+#include <stdbool.h>
+typedef struct node
+{
+    int data;
+    struct node *lc;
+    struct node *rc;
+} node;
+node *createNode(node *n, int value)
+{
+    node *temp = (struct node *)malloc(sizeof(node));
+    if (temp != NULL)
+    {
+        temp->data = value;
+        temp->lc = NULL;
+        temp->rc = NULL;
+    }
+    else
+    {
+        printf("\nMemory unavailable\n");
+    }
+}
+node *insertNode(node *new, int key)
+{
+    if (new == NULL)
+    {
+        return createNode(new, key);
+    }
+    if (key > new->data)
+    {
+        new->rc = insertNode(new->rc, key);
+    }
+    else if (key < new->data)
+    {
+        new->lc = insertNode(new->lc, key);
+    }
+    return new;
+}
+int getLeafNodeCount(node *Node)
+{
+    if (Node == NULL)
+    {
+        return 0;
+    }
+    if (Node->lc == NULL && Node->rc == NULL)
+    {
+        return 1;
+    }
+    else
+    {
+        return getLeafNodeCount(Node->lc) + getLeafNodeCount(Node->rc);
+    }
+}
+void sort(struct node *root)
+{
+    if (root != NULL)
+    {
+        sort(root->lc);
+        printf("%d ", root->data);
+        sort(root->rc);
+    }
+}
+void main()
+{
+    node *root = NULL;
+    int choice, value, count;
+    printf("Press 1 to create root node of binary search tree\n");
+    printf("Press 2 to insert remaining nodes into binary search tree\n");
+    printf("Press 3 to get total number of leaf nodes in binary tree\n");
+    printf("Press 4 for to sort the numbers\n");
+    printf("Press 5 to exit\n");
+    while (1)
+    {
+        printf("Enter the choice\n");
+        scanf("%d", &choice);
+        switch (choice)
+        {
+        case 1:
+            printf("Enter the value to be inserted into the root node\n");
+            scanf("%d", &value);
+            root = createNode(root, value);
+            break;
+        case 2:
+            printf("Enter the value to be inserted into  node\n");
+            scanf("%d", &value);
+            insertNode(root, value);
+            break;
+        case 3:
+            count = getLeafNodeCount(root);
+            printf("The count of leaf nodes is %d\n", count);
+            break;
+        case 4:
+            printf("The sorted list is\n");
+            sort(root);
+            break;
+        case 5:
+            exit(0);
+        }
+    }
+}

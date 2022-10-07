@@ -1,8 +1,8 @@
 try:
-	T = int(input())	
-	for i in range(T):
+	n = int(input())	
+	for i in range(n):
 		A,B = map(int, input().split(' '))
-		ans = A + B
-		print(ans)
+		answer = A + B
+		print(answer)
 except:
 	pass
