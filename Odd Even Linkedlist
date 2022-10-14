@@ -1,0 +1,39 @@
+class ListNode:
+   def __init__(self, data, next = None):
+      self.val = data
+      self.next = next
+def make_list(elements):
+   head = ListNode(elements[0])
+   for element in elements[1:]:
+      ptr = head
+      while ptr.next:
+         ptr = ptr.next
+      ptr.next = ListNode(element)
+   return head
+def print_list(head):
+   ptr = head
+   print('[', end = "")
+   while ptr:
+      print(ptr.val, end = ", ")
+      ptr = ptr.next
+   print(']')
+class Solution(object):
+   def oddEvenList(self, head):
+      if head == None or head.next ==None:
+         return head
+      head1=head
+      head2,head2_beg= head.next,head.next
+      while head2.next!= None and head2.next.next!= None:
+         head1.next = head2.next
+         head2.next = head2.next.next
+         head1 = head1.next
+         head2 = head2.next
+      if head2.next!=None:
+         head1.next = head2.next
+         head1 = head1.next
+      head1.next = head2_beg
+      head2.next = None
+      return head
+ob1 = Solution()
+head = make_list([1,22,13,14,25])
+print_list(ob1.oddEvenList(head))
