@@ -1,0 +1,28 @@
+The problem can be think of as if you walk into i, how many available steps you have?
+if you have 0 steps left while the current value is 0, then you won't be able to go to the next step.
+
+The the question is how to calculate the current step, it is:
+max(--nlen,nums[i])
+since we reuse nlen, so I write it into two steps.
+
+
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        int n = nums.size();
+        if ( n == 1 ) return true;
+
+        int nlen = nums[0];
+        
+        for ( int i = 1; i<n; i++)
+        {
+
+            if (nlen <= 0 && nums[i-1] == 0 ) return false;
+            nlen --;
+            nlen = max(nlen,nums[i]);
+        }
+
+        return true;
+            
+    }
+};
