@@ -25,4 +25,4 @@ for _ in range(int(input())):
             ans=min(ans,left[i]+right[i+1])
             if i-1>-1:
                 ans=min(ans,left[i-1]+right[i])
-    print(ans if ans!=float("inf") else 0)
+    print(ans if ans!=float("inf") else 0)  
