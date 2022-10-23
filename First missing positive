@@ -1,37 +1,69 @@
-class Solution {
-public:
-    int firstMissingPositive(vector<int>& nums) {
-        int n = nums.size(); if (!n) return 1;
-        
-        /* Mark all -ve numbers and zero as INT_MAX */
-        for (int i = 0; i < n; i++) if (nums[i] <= 0) nums[i] = INT_MAX;
-        
-        /* 
-         * If an element in the array is less than or equal to the size 
-         * of the array, we can use its absolute value minus 1 to index 
-         * into the array and change the sign of the number at that index. 
-         * Thus, a negative element at index i represents that an element 
-         * (or elements) of value 'i + 1' was (were) visited.
-         */
-        for (int i = 0; i < n; i++) {
-            int ai = abs(nums[i]) - 1;
-            if (ai < n) {
-                if (nums[ai] > 0) nums[ai] = -1 * nums[ai];
-            }
-        }
-        
-        /*
-         * The first positive element indicates the missing lowest 
-         * positive element because we did not visit that element
-         * (of value i + 1) in the array.
-         */
-        for (int i = 0; i < n; i++) if (nums[i] > 0) return i + 1;
-        
-        /* 
-         * If no positive elements were found, that means the elements 
-         * in the array are consecutive from 1 without any missing integer.
-         * Return the next one.
-         */
-        return n + 1;
-    }
-};
+/* Java program to find the smallest
+positive missing number */
+import java.io.*;
+
+class FirstMissingPositive {
+
+	// Function to find smallest positive
+	// missing number.
+	static int findMissingNo(int []arr, int n)
+	{
+		// to store current array element
+		int val;
+	
+		// to store next array element in
+		// current traversal
+		int nextval;
+	
+		for (int i = 0; i < n; i++) {
+	
+			// if value is negative or greater
+			// than array size, then it cannot
+			// be marked in array. So move to
+			// next element.
+			if (arr[i] <= 0 || arr[i] > n)
+				continue;
+	
+			val = arr[i];
+	
+			// traverse the array until we
+			// reach at an element which
+			// is already marked or which
+			// could not be marked.
+			while (arr[val - 1] != val) {
+				nextval = arr[val - 1];
+				arr[val - 1] = val;
+				val = nextval;
+				if (val <= 0 || val > n)
+					break;
+			}
+		}
+	
+		// find first array index which is
+		// not marked which is also the
+		// smallest positive missing
+		// number.
+		for (int i = 0; i < n; i++) {
+			if (arr[i] != i + 1) {
+				return i + 1;
+			}
+		}
+	
+		// if all indices are marked, then
+		// smallest missing positive
+		// number is array_size + 1.
+		return n + 1;
+	}
+	
+	// Driver code
+	public static void main (String[] args)
+	{
+		int arr[] = { 2, 3, 7, 6, 8, -1, -10, 15 };
+		int arr_size = arr.length;
+		
+		int missing = findMissingNo(arr, arr_size);
+		
+		System.out.println( "The smallest positive"
+				+ " missing number is " + missing);
+	}
+}
